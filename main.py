@@ -7,19 +7,23 @@ ROMANCE = 0
 MONEY = 0
 INVENTORY = []
 SHOP_ITEMS = ["cake", "gift", "ring"]
-
-
 RESPONSES = ["Hello", "What you up to?", "Mwah~"]
 
 
+#==========#
+#=Commands=#
+#==========#
+
 
 def work():
-    x = 0
+    x = 1
     print("working")
     while x <= 5:
         if x <= 5:
             time.sleep(1)
+            print('.')
             x += 1
+    print('Done!')
 
     global MONEY
     MONEY += 5
@@ -90,6 +94,54 @@ def view_window():
     
     root.mainloop()
 
+
+#=======#
+#=Story=#
+#=======#
+
+def beach():
+    pass
+
+def date():
+    pass
+
+def kiss():
+    pass
+
+def her_room():
+    pass
+
+
+def story():
+    print('Current story levels available:')
+    print('beach (min romance level: 25)')
+    print('date (min romance level: 50)')
+    print('kiss (min romance level: 75)')
+    print('her_room (min romance level: 100)')
+    
+    
+    t = input('What story short do you want to play? ')
+    
+    if t.lower() == 'beach' and ROMANCE >= 25:
+        beach()
+    
+    elif t.lower() == 'date' and ROMANCE >= 50:
+        date()
+        
+    elif t.lower() == 'kiss' and ROMANCE >= 75:
+        kiss()
+        
+    elif t.lower() == 'her_room' and ROMANCE >= 100:
+        her_room()
+    else:
+        print('Something went wrong')
+
+
+
+#=================#
+#=Main=Input=Loop=#
+#=================#
+
 while True:
     n = input(": ")
     if n.lower() == "talk":
@@ -106,5 +158,7 @@ while True:
         break
     elif n.lower() == 'look':
         view_window()
+    elif n.lower() == 'story':
+        story()
     else:
         print("Action not found")
