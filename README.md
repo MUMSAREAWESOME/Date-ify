@@ -1,2 +1,11 @@
 # Date-ify
-A dating game coded in python by a shitty python dev.
+A text based dating game written in python.
+
+Planning to move to Ren'py for better image display and better file management.
+
+All programed by yours truely-
+
+
+MWAH~
+
+-MUMSAREAWESOME
