@@ -2,13 +2,25 @@ import random
 import time
 import tkinter as tk
 
+#===========#
+#=Constants=#
+#===========#
+
 NAME = "Yuki Kazue"
 ROMANCE = 0
 MONEY = 0
-INVENTORY = []
-SHOP_ITEMS = ["cake", "gift", "ring"]
 RESPONSES = ["Hello", "What you up to?", "Mwah~"]
+IMAGES = ['yuki.png', 'yuki_angry.png', 'yuki_clingy.png', 'yuki_embarrased.png', 'yuki_happy.png', 'yuki_jealous.png', 'yuki_soft.png', 'yuki_surprised.png']
+SHOP_ITEMS = ["cake", "gift", "ring"]
 
+#=Changeable=#
+
+INVENTORY = []
+
+
+#=Settings=#
+
+SKETCHY = False
 
 #==========#
 #=Commands=#
@@ -84,7 +96,9 @@ def view_window():
     root = tk.Tk()
     root.title("Yuki Kazue")
 
-    image = tk.PhotoImage(file='images/yuki.png')
+    decided_image = random.choice(IMAGES)
+
+    image = tk.PhotoImage(file=f'images/{decided_image}')
 
     frame = tk.Frame()
     frame.pack()
@@ -94,6 +108,36 @@ def view_window():
     
     root.mainloop()
 
+
+def settings():
+    
+    global SKETCHY
+    
+    print('Settings to change:')
+    print(f'Sketchy Content = {SKETCHY}')
+    
+    s = input('What setting would you like to change? ')
+    
+    if s.lower() == 'sketchy content' and SKETCHY == False:
+        SKETCHY = True
+        print('Sketchy Content Allowed')
+    else:
+        SKETCHY = False
+        print('Sketchy Content Blocked')
+
+def commands():
+    
+    print('List of current commands:')
+    print('talk')
+    print('shop')
+    print('give')
+    print('work')
+    print('look')
+    print('settings')
+    print('story')
+    print('exit')
+    print('check')
+    print('help')
 
 #=======#
 #=Story=#
@@ -114,10 +158,11 @@ def her_room():
 
 def story():
     print('Current story levels available:')
-    print('beach (min romance level: 25)')
-    print('date (min romance level: 50)')
-    print('kiss (min romance level: 75)')
-    print('her_room (min romance level: 100)')
+    # print('beach (min romance level: 25)')
+    # print('date (min romance level: 50)')
+    # print('kiss (min romance level: 75)')
+    # print('her_room (min romance level: 100)')
+    print('Nothing to see here...') # Placeholder
     
     
     t = input('What story short do you want to play? ')
@@ -160,5 +205,9 @@ while True:
         view_window()
     elif n.lower() == 'story':
         story()
+    elif n.lower() == 'settings':
+        settings()
+    elif n.lower() == 'help':
+        commands()
     else:
-        print("Action not found")
+        print("Action not found- type 'help' for list of commands")
