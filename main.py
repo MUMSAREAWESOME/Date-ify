@@ -1,17 +1,22 @@
 import random
 import time
 import tkinter as tk
+from colorama import Fore, Back, init
+import os
 
 #===========#
 #=Constants=#
 #===========#
 
+init(autoreset=True)
+
 NAME = "Yuki Kazue"
 ROMANCE = 0
 MONEY = 0
 RESPONSES = ["Hello", "What you up to?", "Mwah~"]
-IMAGES = ['yuki.png', 'yuki_angry.png', 'yuki_clingy.png', 'yuki_embarrased.png', 'yuki_happy.png', 'yuki_jealous.png', 'yuki_soft.png', 'yuki_surprised.png']
+IMAGES = ['yuki.png', 'yuki_angry.png', 'yuki_clingy.png', 'yuki_embarrassed.png', 'yuki_happy.png', 'yuki_jealous.png', 'yuki_soft.png', 'yuki_surprised.png']
 SHOP_ITEMS = ["cake", "gift", "ring"]
+STARTUP = True
 
 #=Changeable=#
 
@@ -22,10 +27,63 @@ INVENTORY = []
 
 SKETCHY = False
 
+#=Saves=#
+
+money = 0
+romance = 0
+inventory = 0
+
 #==========#
 #=Commands=#
 #==========#
 
+def load_save():
+    
+    try:
+        with open("saves/numsave.txt", "r") as f:
+            
+            global money, romance, inventory, MONEY, ROMANCE
+            
+            money = int(f.readline())
+            romance = int(f.readline())
+            f.close()
+            
+            if money > 0:
+                MONEY = money
+                ROMANCE = romance
+    except:
+        MONEY = 0
+        ROMANCE = 0
+    with open("saves/lisave.txt", "r") as f:
+        inventory = list(f.read().splitlines())
+        f.close()
+    for item in inventory:
+        INVENTORY.append(item)
+    time.sleep(4)
+
+def save():
+    
+    with open("saves/numsave.txt", "w") as f:
+        
+        f.write(f"{MONEY}\n")
+        f.write(f'{ROMANCE}\n')
+        f.close()
+    with open("saves/lisave.txt", "w") as f:
+        
+        for g in INVENTORY:
+            f.write(f"{g}\n")
+
+def start():
+    
+    print(f'Welcome to {Fore.RED} Date-ify')
+    print('Loading save:')
+    load_save()
+    print(f'{Fore.GREEN} Done!')
+    print('Loading Game:')
+    time.sleep(2)
+    print(f'{Fore.GREEN} Done!')
+    
+    
 
 def work():
     x = 1
@@ -64,7 +122,6 @@ def shop():
         print(INVENTORY)
     else:
         print("You poor")
-    
 
 def give_item():
     global ROMANCE
@@ -96,7 +153,13 @@ def view_window():
     root = tk.Tk()
     root.title("Yuki Kazue")
 
-    decided_image = random.choice(IMAGES)
+
+    if ROMANCE <= 49:
+        decided_image = random.choice(["yuki.png", "yuki_angry.png", "yuki_jealous.png"])
+    elif ROMANCE > 49  and ROMANCE < 100:
+        decided_image = random.choice(["yuki.png", "yuki_soft.png", "yuki_embarrassed.png"])
+    elif ROMANCE >= 100 and ROMANCE :
+        decided_image = random.choice(["yuki.png", "yuki_soft.png", "yuki_embarrassed.png", "yuki_happy.png", "yuki_surprised.png", "yuki_clingy.png"])
 
     image = tk.PhotoImage(file=f'images/{decided_image}')
 
@@ -113,7 +176,7 @@ def settings():
     
     global SKETCHY
     
-    print('Settings to change:')
+    print('Settings available to change:')
     print(f'Sketchy Content = {SKETCHY}')
     
     s = input('What setting would you like to change? ')
@@ -121,9 +184,18 @@ def settings():
     if s.lower() == 'sketchy content' and SKETCHY == False:
         SKETCHY = True
         print('Sketchy Content Allowed')
-    else:
+    elif s.lower() == 'sketchy content' and SKETCHY == True:
         SKETCHY = False
         print('Sketchy Content Blocked')
+    else:
+        print('Setting not found')
+
+def clear():
+    
+    try:
+        os.system('clear')
+    except:
+        os.system('cls')
 
 def commands():
     
@@ -138,6 +210,8 @@ def commands():
     print('exit')
     print('check')
     print('help')
+    print('save')
+    print('clear')
 
 #=======#
 #=Story=#
@@ -186,6 +260,9 @@ def story():
 #=================#
 #=Main=Input=Loop=#
 #=================#
+while STARTUP == True:
+    start()
+    STARTUP = False
 
 while True:
     n = input(": ")
@@ -209,5 +286,9 @@ while True:
         settings()
     elif n.lower() == 'help':
         commands()
+    elif n.lower() == 'save':
+        save()
+    elif n.lower() == 'clear':
+        clear()
     else:
-        print("Action not found- type 'help' for list of commands")
+        print(f"{Fore.RED} Action not found- type 'help' for list of commands")
