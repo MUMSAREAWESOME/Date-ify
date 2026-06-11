@@ -199,7 +199,7 @@ def clear():
 
 def commands():
 
-    print(f'List of current commands:\n {Fore.RED} talk- {Fore.WHITE} Yuki will say something\n {Fore.RED} shop- {Fore.WHITE} Opens the shop\n {Fore.RED} give- {Fore.WHITE} Give Yuki an item\n {Fore.RED} work- {Fore.WHITE} Work for money to spend in the shop\n {Fore.RED} look- {Fore.WHITE} Opens a picture of Yuki (Changes via romance level)\n {Fore.RED} settings\n story- {Fore.WHITE} Play story shorts\n {Fore.RED} exit- {Fore.WHITE} Exit the game\n {Fore.RED} check- {Fore.WHITE} Check stats\n {Fore.RED} help- {Fore.WHITE} Open this menu\n {Fore.RED} save- {Fore.WHITE} Save\n {Fore.RED} clear- {Fore.WHITE} Clear the screen')
+    print(f'List of current commands:\n {Fore.RED} talk- {Fore.WHITE} Yuki will say something\n {Fore.RED} shop- {Fore.WHITE} Opens the shop\n {Fore.RED} give- {Fore.WHITE} Give Yuki an item\n {Fore.RED} work- {Fore.WHITE} Work for money to spend in the shop\n {Fore.RED} look- {Fore.WHITE} Opens a picture of Yuki (Changes via romance level)\n {Fore.RED} settings- {Fore.WHITE} Change the settings\n story- {Fore.WHITE} Play story shorts\n {Fore.RED} exit- {Fore.WHITE} Exit the game\n {Fore.RED} check- {Fore.WHITE} Check stats\n {Fore.RED} help- {Fore.WHITE} Open this menu\n {Fore.RED} save- {Fore.WHITE} Save\n {Fore.RED} clear- {Fore.WHITE} Clear the screen')
 
 #=======#
 #=Story=#
