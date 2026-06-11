@@ -192,26 +192,14 @@ def settings():
 
 def clear():
     
-    try:
+    if os.name != 'nt':
         os.system('clear')
-    except:
+    else:
         os.system('cls')
 
 def commands():
-    
-    print('List of current commands:')
-    print('talk')
-    print('shop')
-    print('give')
-    print('work')
-    print('look')
-    print('settings')
-    print('story')
-    print('exit')
-    print('check')
-    print('help')
-    print('save')
-    print('clear')
+
+    print(f'List of current commands:\n {Fore.RED} talk- {Fore.WHITE} Yuki will say something\n {Fore.RED} shop- {Fore.WHITE} Opens the shop\n {Fore.RED} give- {Fore.WHITE} Give Yuki an item\n {Fore.RED} work- {Fore.WHITE} Work for money to spend in the shop\n {Fore.RED} look- {Fore.WHITE} Opens a picture of Yuki (Changes via romance level)\n {Fore.RED} settings\n story- {Fore.WHITE} Play story shorts\n {Fore.RED} exit- {Fore.WHITE} Exit the game\n {Fore.RED} check- {Fore.WHITE} Check stats\n {Fore.RED} help- {Fore.WHITE} Open this menu\n {Fore.RED} save- {Fore.WHITE} Save\n {Fore.RED} clear- {Fore.WHITE} Clear the screen')
 
 #=======#
 #=Story=#
