@@ -33,49 +33,79 @@ money = 0
 romance = 0
 inventory = 0
 
+saves_dir = os.path.join(os.getcwd(), 'saves')
+save_location1 = os.path.join(saves_dir, 'numsave.txt')
+save_location2 = os.path.join(saves_dir, 'lisave.txt')
 #==========#
 #=Commands=#
 #==========#
 
+def clear():
+    
+    if os.name != 'nt':
+        os.system('clear')
+    else:
+        os.system('cls')
+
+def loading_animation(sec):
+    while sec > 0:
+        print(random.choice(['.', '..', '...', '....']))
+        time.sleep(1)
+        clear()
+        sec -= 1
+
 def load_save():
     
-    try:
-        with open("saves/numsave.txt", "r") as f:
-            
-            global money, romance, inventory, MONEY, ROMANCE
-            
-            money = int(f.readline())
-            romance = int(f.readline())
-            f.close()
-            
+    global money, romance, inventory, saves_dir, save_location1, save_location2, MONEY, ROMANCE, INVENTORY
+    
+    
+    os.makedirs(saves_dir, exist_ok=True)
+    
+    if os.path.isfile(save_location1): 
+        try:
+            with open(save_location1, "r") as f:
+        
+        
+                money = int(f.readline())
+                romance = int(f.readline())
+                f.close()
+        
             if money > 0:
                 MONEY = money
                 ROMANCE = romance
-    except:
-        MONEY = 0
-        ROMANCE = 0
-    with open("saves/lisave.txt", "r") as f:
-        inventory = list(f.read().splitlines())
-        f.close()
-    for item in inventory:
-        INVENTORY.append(item)
+        except:
+            MONEY = 0
+            ROMANCE = 0
+    else:
+        with open(save_location1, "x") as f:
+            pass
+    if os.path.isfile(save_location2):
+        with open(save_location2, "r") as f:
+            inventory = list(f.read().splitlines())
+            f.close()
+        for item in inventory:
+            INVENTORY.append(item)
+    else:
+        with open(save_location2, "x") as f:
+            pass
     time.sleep(4)
 
 def save():
     
-    with open("saves/numsave.txt", "w") as f:
+    with open(save_location1, "w") as f:
         
         f.write(f"{MONEY}\n")
         f.write(f'{ROMANCE}\n')
         f.close()
-    with open("saves/lisave.txt", "w") as f:
+    with open(save_location2, "w") as f:
         
         for g in INVENTORY:
             f.write(f"{g}\n")
+    loading_animation(2)
 
 def start():
     
-    print(f'Welcome to {Fore.RED} Date-ify')
+    print(f'Welcome to {Fore.RED}Date-ify')
     print('Loading save:')
     load_save()
     print(f'{Fore.GREEN} Done!')
@@ -93,35 +123,57 @@ def work():
             time.sleep(1)
             print('.')
             x += 1
-    print('Done!')
+    print(f'{Fore.GREEN} Done!')
 
     global MONEY
     MONEY += 5
 
 def talk():
     resp = random.choice(RESPONSES)
-    print(resp)
+    print(f'Yuki: {resp}')
 
 def shop():
-    i = input(f"What do you want to buy {SHOP_ITEMS}? ")
-    global MONEY
-    if i.lower() == "cake" and MONEY >= 5:
-        print("You bought cake")
-        MONEY -= 5
-        INVENTORY.append('cake')
-        print(INVENTORY)
-    elif i.lower() == "gift" and MONEY >= 10:
-        MONEY -= 10
-        print("You bought gift")
-        INVENTORY.append('gift')
-        print(INVENTORY)
-    elif i.lower() == "ring" and MONEY >= 100:
-        MONEY -= 100
-        print("You bought ring")
-        INVENTORY.append('ring')
-        print(INVENTORY)
-    else:
-        print("You poor")
+    
+    shopping = True
+    
+    while shopping:
+    
+    
+        print(f"Welcome to the shop! Type {Fore.RED}'exit'{Fore.WHITE} to exit to the main game!\n")
+        
+        i = input(f"What do you want to buy {SHOP_ITEMS}? ")
+        global MONEY
+        
+        if i.lower() == 'exit':    
+            break
+        else:
+            if 'cake' in INVENTORY:
+                if i.lower() == "cake" and MONEY >= 5:
+                    print(f'{Fore.RED}You already have a cake')
+                else:    
+                    print("You bought cake")
+                    MONEY -= 5
+                    INVENTORY.append('cake')
+                    print(INVENTORY)
+            if 'gift' in INVENTORY:
+                if i.lower() == "gift" and MONEY >= 10:
+                    print(f'{Fore.RED}You already have a gift')
+                else:
+                    MONEY -= 10
+                    print("You bought gift")
+                    INVENTORY.append('gift')
+                    print(INVENTORY)
+            if 'ring' in INVENTORY:
+                
+                if i.lower() == "ring" and MONEY >= 100:
+                    print(f'{Fore.RED}You already have a ring')
+                else:
+                    MONEY -= 100
+                    print("You bought ring")
+                    INVENTORY.append('ring')
+                    print(INVENTORY)
+            else:
+                print(f"{Fore.RED}You're too poor to afford anything")
 
 def give_item():
     global ROMANCE
@@ -190,16 +242,9 @@ def settings():
     else:
         print('Setting not found')
 
-def clear():
-    
-    if os.name != 'nt':
-        os.system('clear')
-    else:
-        os.system('cls')
-
 def commands():
 
-    print(f'List of current commands:\n {Fore.RED} talk- {Fore.WHITE} Yuki will say something\n {Fore.RED} shop- {Fore.WHITE} Opens the shop\n {Fore.RED} give- {Fore.WHITE} Give Yuki an item\n {Fore.RED} work- {Fore.WHITE} Work for money to spend in the shop\n {Fore.RED} look- {Fore.WHITE} Opens a picture of Yuki (Changes via romance level)\n {Fore.RED} settings- {Fore.WHITE} Change the settings\n story- {Fore.WHITE} Play story shorts\n {Fore.RED} exit- {Fore.WHITE} Exit the game\n {Fore.RED} check- {Fore.WHITE} Check stats\n {Fore.RED} help- {Fore.WHITE} Open this menu\n {Fore.RED} save- {Fore.WHITE} Save\n {Fore.RED} clear- {Fore.WHITE} Clear the screen')
+    print(f'List of current commands:\n {Fore.RED} talk- {Fore.WHITE} Yuki will say something\n {Fore.RED} shop- {Fore.WHITE} Opens the shop\n {Fore.RED} give- {Fore.WHITE} Give Yuki an item\n {Fore.RED} work- {Fore.WHITE} Work for money to spend in the shop\n {Fore.RED} look- {Fore.WHITE} Opens a picture of Yuki (Changes via romance level)\n {Fore.RED} settings- {Fore.WHITE} Change the settings\n story- {Fore.WHITE} Play story shorts\n {Fore.RED} exit- {Fore.WHITE} Exit the game with after saving\n{Fore.Red} !exit- {Fore.WHITE} Exit without saving\n {Fore.RED} check- {Fore.WHITE} Check stats\n {Fore.RED} help- {Fore.WHITE} Open this menu\n {Fore.RED} save- {Fore.WHITE} Save\n {Fore.RED} clear- {Fore.WHITE} Clear the screen')
 
 #=======#
 #=Story=#
@@ -253,7 +298,8 @@ while STARTUP == True:
     STARTUP = False
 
 while True:
-    n = input(": ")
+    n = input(f"{Fore.BLUE}> ")
+    
     if n.lower() == "talk":
         talk()
     elif n.lower() == "work":
@@ -265,6 +311,10 @@ while True:
     elif n.lower() == 'give':
         give_item()
     elif n.lower() == 'exit':
+        print('Saving')
+        save()
+        break
+    elif n.lower() == '!exit':
         break
     elif n.lower() == 'look':
         view_window()
