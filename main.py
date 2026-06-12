@@ -36,6 +36,12 @@ inventory = 0
 saves_dir = os.path.join(os.getcwd(), 'saves')
 save_location1 = os.path.join(saves_dir, 'numsave.txt')
 save_location2 = os.path.join(saves_dir, 'lisave.txt')
+
+#=Story=#
+
+story_dir = os.path.join(os.getcwd(), 'story')
+date_story = os.path.join(story_dir, 'beach.txt')
+
 #==========#
 #=Commands=#
 #==========#
@@ -250,8 +256,15 @@ def commands():
 #=Story=#
 #=======#
 
+
+
 def beach():
-    pass
+    
+    with open(date_story, "r") as f:
+        date = f.read().splitlines()
+        
+        for thing in date:
+            print(thing)
 
 def date():
     pass
@@ -293,6 +306,7 @@ def story():
 #=================#
 #=Main=Input=Loop=#
 #=================#
+
 while STARTUP == True:
     start()
     STARTUP = False
