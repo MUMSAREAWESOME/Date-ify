@@ -15,6 +15,4 @@ I hope this brigs you some joy.
 
 MWAH~
 
-Lots of love
-
 -MUMSAREAWESOME <3
