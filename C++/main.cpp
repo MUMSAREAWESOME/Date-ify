@@ -8,6 +8,7 @@
 #include <random>
 #include <algorithm>
 #include <cstdlib>
+#include <fstream>
 
 // Classes
 
@@ -83,7 +84,7 @@ void talk(){
 }
 
 void help(){
-  std::vector<std::string> commands = {"talk", "chat", "work", "check", "/quit", "/help", "/clear"};
+  std::vector<std::string> commands = {"talk", "chat", "work", "check", "save" , "/quit", "/help", "/clear"};
 
   std::cout << "Valid commands:\n";
 
@@ -171,6 +172,57 @@ void shop(gameData& player){
   }
 }
 
+void save(gameData& player){
+
+  std::ofstream file("save.txt");
+
+  file << player.romance << std::endl;
+  file << player.money << std::endl;
+
+  file.close();
+
+  std::ofstream file2("inventory.txt");
+
+
+  for (std::string i : player.inventory){
+    file2 << i << std::endl;
+  }
+
+  file2.close();
+}
+
+void load(gameData& player){
+
+
+  std::ifstream file("save.txt");
+
+
+  std::vector<int> vec;
+
+  int a;
+
+  while (file >> a){
+    vec.push_back(a);
+  }
+
+  player.romance = vec[0];
+  player.money = vec[1];
+
+  file.close();
+
+  std::ifstream file2("inventory.txt");
+
+
+  std::string b;
+
+  while (file2 >> b){
+    player.inventory.push_back(b);
+  }
+
+  file2.close();
+}
+
+
 // Entry point
 
 int main(){
@@ -181,6 +233,8 @@ int main(){
   std::vector<std::string> vec;
 
   gameData player(a, b, vec); // Create the player object and initialise the data
+
+  load(player);
 
   std::string input;
 
@@ -200,6 +254,7 @@ int main(){
     else if (input == "/help") help();
     else if (input == "/clear") clearScreen();
     else if (input == "shop") shop(player); // Opens the shop for the player
+    else if (input == "save") save(player);
     else std::cout << "Error, command does not exist\n\n";
   }
   
