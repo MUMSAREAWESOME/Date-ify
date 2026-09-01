@@ -63,6 +63,24 @@ class gameData{
       }
       inventory.erase(inventory.begin() + target_index); // Removes the value at the specified index (formula = start_index + target_index)
     }
+
+    bool inventoryItemCheck(std::string item){
+
+      bool has;
+
+      for (std::string i : inventory){
+        if (i == item){
+          has = true;
+          break;
+        } 
+      }
+
+      if (has == true){
+        return true;
+      }
+      
+      return false;
+    }
 };
 
 int randomNumberRange(int a, int b){
@@ -196,7 +214,6 @@ void load(gameData& player){
 
   std::ifstream file("save.txt");
 
-
   std::vector<int> vec;
 
   int a;
@@ -212,7 +229,6 @@ void load(gameData& player){
 
   std::ifstream file2("inventory.txt");
 
-
   std::string b;
 
   while (file2 >> b){
@@ -220,6 +236,61 @@ void load(gameData& player){
   }
 
   file2.close();
+}
+
+void giveItem(gameData& player){
+
+  std::string choice;
+
+  while (true){
+
+    std::cout << "GiveMenu> ";
+
+    std::cin >> choice;
+
+    transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
+
+    if (choice == "/help"){
+      std::cout << "Current commands:\nGive\n/quit\n/quit\n";
+    }
+    else if (choice == "/quit"){
+      break;
+    }
+    else if (choice == "give"){
+
+      std::string item;
+      
+      while (true){
+        std::cout << "GiveItem> ";
+
+        std::cin >> item;
+
+        transform(item.begin(), item.end(), item.begin(), ::tolower);
+
+        if (item == "/help") std::cout << "Current commands:\ncake\ngift\nring\n/quit\n/help\n";
+        else if (item == "/quit") break;
+        // Cake
+        else if (item == "cake" && player.inventoryItemCheck("cake") == true){
+          player.romance += 5;
+          player.inventoryRemove("cake");
+          std::cout << "Yuki: Is this for me? *Blushes* I'll take it, but only because its rude not to!\n";
+        }
+        // Gift
+        else if (item == "gift" && player.inventoryItemCheck("gift") == true){
+          player.romance += 15;
+          player.inventoryRemove("gift");
+          std::cout << "Yuki: A gift? What are you stupid it's not my birthday you know! *Looks down to hide her blush* You better have not spent to much on this baka~!\n";
+        }
+        // Ring
+        else if (item == "ring" && player.inventoryItemCheck("ring") == true){
+          player.romance += 30;
+          player.inventoryRemove("ring");
+          std::cout << "Yuki: A ring? What are you implying? This is the nicest thing anybody has ever done for me... I'm going to put it on my left ring finger...\n" << "You: Isn't that the finger to the heart? What are you implying\n" << "Yuki: It's not like I like you or anything, Baka~!\n";
+        }
+        else std::cout << "Error, you either dont own the specified item or you have entered an invalid command. Type /help for commands and /quit to exit this menu.\n";
+      }
+    }
+  }
 }
 
 
@@ -247,7 +318,11 @@ int main(){
     transform(input.begin(), input.end(), input.begin(), ::tolower);
 
   
-    if (input == "/quit") break;
+    if (input == "/quit"){
+      save(player);
+      std::cout << "Saved data!\n";
+      break;
+    }
     else if (input == "check") player.check();
     else if (input == "work") player.work(5);
     else if (input == "talk" || input == "chat") talk();
@@ -255,6 +330,7 @@ int main(){
     else if (input == "/clear") clearScreen();
     else if (input == "shop") shop(player); // Opens the shop for the player
     else if (input == "save") save(player);
+    else if (input == "give") giveItem(player);
     else std::cout << "Error, command does not exist\n\n";
   }
   
