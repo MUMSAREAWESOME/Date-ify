@@ -83,6 +83,60 @@ class gameData{
     }
 };
 
+// Function Foward Declaration
+
+int randomNumberRange(int a, int b);
+void talk();
+void help();
+void clearScreen();
+void shop(gameData& player);
+void save(gameData& player);
+void load(gameData& player);
+void giveItem(gameData& player);
+
+
+// Entry point
+
+int main(){
+
+  int a = 0;
+  int b = 0;
+  
+  std::vector<std::string> vec;
+
+  gameData player(a, b, vec); // Create the player object and initialise the data
+
+  load(player);
+
+  std::string input;
+
+  while (true){
+
+    std::cout << "Enter command (/quit to quit, /help for help):" << '\n' << "> ";
+    
+    std::cin >> input;
+
+    transform(input.begin(), input.end(), input.begin(), ::tolower);
+
+  
+    if (input == "/quit"){
+      save(player);
+      std::cout << "Saved data!\n";
+      break;
+    }
+    else if (input == "check") player.check();
+    else if (input == "work") player.work(5);
+    else if (input == "talk" || input == "chat") talk();
+    else if (input == "/help") help();
+    else if (input == "/clear") clearScreen();
+    else if (input == "shop") shop(player); // Opens the shop for the player
+    else if (input == "save") save(player);
+    else if (input == "give") giveItem(player);
+    else std::cout << "Error, command does not exist\n\n";
+  }
+
+// Functions
+
 int randomNumberRange(int a, int b){
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 gen(rd()); // seed the generator
@@ -90,9 +144,7 @@ int randomNumberRange(int a, int b){
 
   return distr(gen);
 }
-
-// Functions
-
+  
 void talk(){
   std::vector<std::string> responses = {"Hrmph, It's not like i enjoy seeing you or anything...", "Here eat some of this, I accidently made to much...", "It's not like I like you or anything!"};
 
@@ -112,7 +164,12 @@ void help(){
 }
 
 void clearScreen(){
-  std::system("clear");
+  // Checks if it is windows at compile time
+  #if _WIN32
+    std::system("cls");
+  #else
+    std::system("clear");
+  #endif
 }
 
 void shop(gameData& player){
@@ -292,47 +349,5 @@ void giveItem(gameData& player){
     }
   }
 }
-
-
-// Entry point
-
-int main(){
-
-  int a = 0;
-  int b = 0;
-  
-  std::vector<std::string> vec;
-
-  gameData player(a, b, vec); // Create the player object and initialise the data
-
-  load(player);
-
-  std::string input;
-
-  while (true){
-
-    std::cout << "Enter command (/quit to quit, /help for help):" << '\n' << "> ";
-    
-    std::cin >> input;
-
-    transform(input.begin(), input.end(), input.begin(), ::tolower);
-
-  
-    if (input == "/quit"){
-      save(player);
-      std::cout << "Saved data!\n";
-      break;
-    }
-    else if (input == "check") player.check();
-    else if (input == "work") player.work(5);
-    else if (input == "talk" || input == "chat") talk();
-    else if (input == "/help") help();
-    else if (input == "/clear") clearScreen();
-    else if (input == "shop") shop(player); // Opens the shop for the player
-    else if (input == "save") save(player);
-    else if (input == "give") giveItem(player);
-    else std::cout << "Error, command does not exist\n\n";
-  }
-  
   return 0;
 }
