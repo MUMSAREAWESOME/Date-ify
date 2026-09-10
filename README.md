@@ -27,7 +27,7 @@ for ubuntu:
 g++ main.cpp player.cpp functions.cpp -DIS_UBUNTU -o main.exe
 ```
 
-> [!CAUTION}
+> [!CAUTION]
 > on Windows it is not tested, nor MacOs
 
 
