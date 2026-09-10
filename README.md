@@ -30,6 +30,7 @@ on Windows it is not tested, nor MacOs
 
 
 This is Yuki, she is a tsundere anime girl who you build up your romance with in the game:
+
 ![Yuki.png](/images/yuki.png)
 > Its not like I like you or anything - Yuki Kazue
 
