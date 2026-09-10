@@ -354,7 +354,7 @@ void giveItem(gameData& player){
 
 void view(){
   int i = randomNumberRange(0, 7);
-  std::vector<std::string> vec = {"yuki.png", "yuki_angry.png", "yuki_clingy.png", "yuki_embarrased.png", "yuki_happy.png", "yuki_jealous.png", "yuki_soft.png", "yuki_surprised.png"};
+  std::vector<std::string> vec = {"yuki.png", "yuki_angry.png", "yuki_clingy.png", "yuki_embarrassed.png", "yuki_happy.png", "yuki_jealous.png", "yuki_soft.png", "yuki_surprised.png"};
   std::string command = "mpv images/";
   command += vec[i];
   std::system(command.c_str());
