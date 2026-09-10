@@ -17,6 +17,7 @@ class gameData{
     // Data
     int romance; // The total romance level that the user has with Yuki
     int money; // How much money the user has
+    int first_run = 0; // Used to check if it is the first run
     std::vector<std::string> inventory; // The user's current inventory
 
     // Constructor
@@ -32,7 +33,9 @@ class gameData{
     void work(int amount){
       // This is how the player earns money
       // There is a 1 seccond wait time before the money is added to the user's total
+
       std::this_thread::sleep_for(std::chrono::seconds(1));
+        
       money += amount;
       std::cout << "Earned " << amount << " dollars.\n";
     }
@@ -92,6 +95,24 @@ int randomNumberRange(int a, int b){
 
   return distr(gen);
 }
+
+void firstRun(gameData& player) {
+  #if _WIN32
+    std::system("winget install -e --id mpv.net");
+  #elif defined(__APPLE__)
+    std::system("brew install mpv");
+  #else
+    #if IS_ARCH
+      std::system("sudo pacman -S mpv");
+    #elif defined (IS_FEDORA)
+      std::system("sudo dnf install mpv");
+    #elif defined (IS_UBUNTU)
+      std::system("sudo apt install mpv");
+    #endif
+  #endif
+
+  player.first_run = 1;
+}
   
 void talk(){
   std::vector<std::string> responses = {"Hrmph, It's not like i enjoy seeing you or anything...", "Here eat some of this, I accidently made to much...", "It's not like I like you or anything!"};
@@ -102,7 +123,7 @@ void talk(){
 }
 
 void help(){
-  std::vector<std::string> commands = {"talk", "chat", "work", "check", "save" , "/quit", "/help", "/clear"};
+  std::vector<std::string> commands = {"talk", "chat", "work", "check", "save", "story", "/quit", "/help", "/clear"};
 
   std::cout << "Valid commands:\n";
 
@@ -195,52 +216,83 @@ void shop(gameData& player){
   }
 }
 
-void save(gameData& player){
+bool save(gameData& player){
 
-  std::ofstream file("save.txt");
+  std::ofstream file("saves/save.txt");
 
-  file << player.romance << std::endl;
-  file << player.money << std::endl;
-
+  if (file.is_open()){
+    file << player.romance << std::endl;
+    file << player.money << std::endl;
+    file << player.first_run << std::endl;
+  }
+  else{
+    std::cerr << "Error, IDK what is wrong here bro, you're cooked lol ¯\\_₍⸍⸌̣ʷ̣̫⸍̣⸌₎_/¯";
+    return false;
+  }
+  
   file.close();
 
-  std::ofstream file2("inventory.txt");
+  std::ofstream file2("saves/inventory.txt");
 
-
-  for (std::string i : player.inventory){
-    file2 << i << std::endl;
+  if (file2.is_open()){
+    for (std::string i : player.inventory){
+      file2 << i << std::endl;
+    }
   }
-
+  else{
+    std::cerr << "Error, IDK bro you fucked this up somehow, you're cooked lol ¯\\_₍⸍⸌̣ʷ̣̫⸍̣⸌₎_/¯";
+    return false;
+  }
+  
   file2.close();
+
+  return true;
 }
 
-void load(gameData& player){
+bool load(gameData& player){
 
 
-  std::ifstream file("save.txt");
+  std::ifstream file("saves/save.txt");
 
-  std::vector<int> vec;
+  if (file.is_open()){
 
-  int a;
+    std::vector<int> vec;
 
-  while (file >> a){
-    vec.push_back(a);
+    int a;
+
+    while (file >> a){
+      vec.push_back(a);
+    }
+
+    player.romance = vec[0];
+    player.money = vec[1];
+    player.first_run = vec[2];
   }
-
-  player.romance = vec[0];
-  player.money = vec[1];
-
+  else{
+    std::cerr << "Error, save file ('save.txt') not found or is empty. Please ensure it exists and contains two numbers seperated by a newline.";
+    return false;
+  }
+  
   file.close();
 
-  std::ifstream file2("inventory.txt");
+  std::ifstream file2("saves/inventory.txt");
 
-  std::string b;
+  if (file2.is_open()) {
 
-  while (file2 >> b){
-    player.inventory.push_back(b);
+    std::string b;
+
+    while (file2 >> b){
+      player.inventory.push_back(b);
+    }
   }
-
+  else{
+    std::cerr << "Error, save file ('inventory.txt') not found, please ensure it is in the saves folder.";
+    return false;
+  }
+  
   file2.close();
+
+  return true;
 }
 
 void giveItem(gameData& player){
@@ -298,19 +350,86 @@ void giveItem(gameData& player){
   }
 }
 
+// View Image
+
+void view(){
+  int i = randomNumberRange(0, 7);
+  std::vector<std::string> vec = {"yuki.png", "yuki_angry.png", "yuki_clingy.png", "yuki_embarrased.png", "yuki_happy.png", "yuki_jealous.png", "yuki_soft.png", "yuki_surprised.png"};
+  std::string command = "mpv images/";
+  command += vec[i];
+  std::system(command.c_str());
+}
+
+// Story
+
+void beachDay(){
+  std::ifstream file("story/beach.txt");
+
+  if (file.is_open()){
+    std::string line;
+    int count = 0;
+    while (getline(file, line)){
+      if (count == 5){
+        std::string choice;
+        std::cin >> choice;
+        transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
+        if (choice == "no" || choice == "n"){
+          break;
+        }
+        count = 0;
+      }
+      else std::cout << line << '\n';
+      count += 1;
+    }
+  }
+  else{
+    std::cerr << "Error, story file not found ('story/beach.txt'). Please insure the story directory exists and there are the storys inside it\n";
+  }
+}
+
+void storyMenu(){
+  std::vector<std::string> vec = {"beach_day"};
+
+  while (true){
+    std::cout << "What would you like to do?: ";
+
+    std::string choice;
+  
+    std::cin >> choice;
+
+    transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
+
+    if (choice == "/quit") break;
+    else if (choice == "/help"){
+      std::cout << "Commands for story menu: /quit, /help, beach\n";
+    }
+    else if (choice == "beach_day" || choice == "beach day" || choice == "beach") beachDay();
+    else std::cout << "Error, command not found\n";
+  }
+}
+
 // Entry point
 
 int main(){
 
   int a = 0;
   int b = 0;
-  
+   
   std::vector<std::string> vec;
 
   gameData player(a, b, vec); // Create the player object and initialise the data
 
-  load(player);
+  bool saveFile;
 
+  saveFile = load(player);
+
+  if (saveFile == false) return 1;
+
+  if (player.first_run == 0){
+    firstRun(player);
+    clearScreen();
+  }
+  
   std::string input;
 
   while (true){
@@ -323,8 +442,12 @@ int main(){
 
   
     if (input == "/quit"){
-      save(player);
-      std::cout << "Saved data!\n";
+      bool temp;
+      temp = save(player);
+      if (temp == false){
+        return 1;
+      }
+      else std::cout << "Saved data!\n";
       break;
     }
     else if (input == "check") player.check();
@@ -333,10 +456,20 @@ int main(){
     else if (input == "/help") help();
     else if (input == "/clear") clearScreen();
     else if (input == "shop") shop(player); // Opens the shop for the player
-    else if (input == "save") save(player);
-    else if (input == "give") giveItem(player);
-    else std::cout << "Error, command does not exist\n\n";
+    else if (input == "save") {
+      bool temp;
+      temp = save(player);
+
+      if (temp == false){
+        return 1;
+      }
+      else std::cout << "Saved data!\n";
     }
+    else if (input == "give") giveItem(player);
+    else if (input == "story") storyMenu();
+    else if (input == "view") view();
+    else std::cout << "Error, command does not exist\n\n";
+  }
   return 0;
 }
 
