@@ -13,8 +13,12 @@ To compile the program with G++ run this command
 g++ main.cpp game.cpp functions.cpp player.cpp image.cpp -o main.exe -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 ```
 
+Or
+
+Run the build.exe to install the program and its dependencies (MacOs, Arch, Fedora, Debian/Ubuntu and its subsets)
+
 > [!CAUTION]
-> On Windows the program has not been tested or build.
+> On Windows the program has not been tested or built.
 > The same case on MacOs
 
 
