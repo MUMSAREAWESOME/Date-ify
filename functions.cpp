@@ -1,5 +1,6 @@
 #include "functions.h"
 #include "player.h"
+#include "image.h"
 #include <cctype>
 #include <iostream>
 #include <pthread.h>
@@ -47,7 +48,7 @@ void talk(){
 }
 
 void help(){
-  std::vector<std::string> commands = {"talk", "chat", "work", "check", "save", "story", "/quit", "/help", "/clear"};
+  std::vector<std::string> commands = {"talk", "chat", "work", "check", "save", "story", "kiss", "/quit", "/help", "/clear"};
 
   std::cout << "Valid commands:\n";
 
@@ -280,12 +281,19 @@ void giveItem(gameData& player){
 
 // View Image
 
-void view(){
-  int i = randomNumberRange(0, 7);
+void view(gameData& player){
+  int i;
+
+  if (player.romance >= 10) i = randomNumberRange(0, 1);
+  else if (player.romance >= 50) i = randomNumberRange(0, 3);
+  else if (player.romance >= 100)  i = randomNumberRange(0, 7);
+  else i = 0;
+  
   std::vector<std::string> vec = {"yuki.png", "yuki_angry.png", "yuki_clingy.png", "yuki_embarrased.png", "yuki_happy.png", "yuki_jealous.png", "yuki_soft.png", "yuki_surprised.png"};
-  std::string command = "mpv images/";
-  command += vec[i];
-  std::system(command.c_str());
+  
+  std::string image_path = "images/";
+  image_path += vec[i];
+  showImage(image_path.c_str(), 470, 626);
 }
 
 // Story

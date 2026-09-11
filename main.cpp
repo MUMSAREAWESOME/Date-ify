@@ -1,5 +1,6 @@
 #include "player.h"
 #include "functions.h"
+#include "game.h"
 #include <cctype>
 #include <iostream>
 #include <pthread.h>
@@ -66,7 +67,12 @@ int main(){
     }
     else if (input == "give") giveItem(player);
     else if (input == "story") storyMenu();
-    else if (input == "view") view();
+    else if (input == "view") view(player);
+    else if (input == "kiss") {
+      bool temp = gameRun("Kiss Yuki!", 500);
+      if (temp) player.romance += 30;
+      std::cout << "You earned 30 romance";
+    }
     else std::cout << "Error, command does not exist\n\n";
   }
   return 0;

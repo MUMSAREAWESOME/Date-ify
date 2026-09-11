@@ -19,7 +19,7 @@ bool load(gameData& player);
 void giveItem(gameData& player);
 
 // Images
-void view();
+void view(gameData& player);
 
 // Story
 void beachDay();

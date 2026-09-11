@@ -7,24 +7,10 @@ All programed by yours truely.
 
 Why? you may ask. Because why not!
 
-To compile on linux parse the -DIS_(DISTRO_NAME) in the g++
-
-for Arch:
+To compile the program with G++ run this command
 
 ```
-g++ main.cpp player.cpp functions.cpp -DIS_ARCH -o main.exe
-```
-
-for Fedora:
-
-```
-g++ main.cpp player.cpp functions.cpp -DIS_FEDORA -o main.exe
-```
-
-for Ubuntu:
-
-```
-g++ main.cpp player.cpp functions.cpp -DIS_UBUNTU -o main.exe
+g++ main.cpp game.cpp functions.cpp player.cpp image.cpp -o main.exe -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 ```
 
 > [!CAUTION]
