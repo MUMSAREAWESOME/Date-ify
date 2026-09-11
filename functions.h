@@ -9,7 +9,6 @@ class gameData;
 int randomNumberRange(int a, int b);
 
 // Baisc Game Stuff
-void firstRun(gameData& player);
 void talk();
 void help();
 void clearScreen();

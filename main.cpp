@@ -26,7 +26,6 @@ int main(){
   if (saveFile == false) return 1;
 
   if (player.first_run == 0){
-    firstRun(player);
     clearScreen();
   }
   

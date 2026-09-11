@@ -20,24 +20,6 @@ int randomNumberRange(int a, int b){
 
   return distr(gen);
 }
-
-void firstRun(gameData& player) {
-  #if _WIN32
-    std::system("winget install -e --id mpv.net");
-  #elif defined(__APPLE__)
-    std::system("brew install mpv");
-  #else
-    #if IS_ARCH
-      std::system("sudo pacman -S mpv");
-    #elif defined (IS_FEDORA)
-      std::system("sudo dnf install mpv");
-    #elif defined (IS_UBUNTU)
-      std::system("sudo apt install mpv");
-    #endif
-  #endif
-
-  player.first_run = 1;
-}
   
 void talk(){
   std::vector<std::string> responses = {"Hrmph, It's not like i enjoy seeing you or anything...", "Here eat some of this, I accidently made to much...", "It's not like I like you or anything!"};
