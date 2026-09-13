@@ -69,8 +69,10 @@ int main(){
     else if (input == "view") view(player);
     else if (input == "kiss") {
       bool temp = gameRun("Kiss Yuki!", 500);
-      if (temp) player.romance += 30;
-      std::cout << "You earned 30 romance";
+      if (temp) {
+        player.romance += 30;
+        std::cout << "You earned 30 romance";
+      }
     }
     else std::cout << "Error, command does not exist\n\n";
   }

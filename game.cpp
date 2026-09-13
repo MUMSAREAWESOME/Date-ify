@@ -89,7 +89,8 @@ bool gameRun(std::string name, int winScore){
       BeginDrawing();
         ClearBackground(RED);
         DrawText("YOU DIED!", 223, 235, 30, WHITE);
-        DrawText("Press 'C' to quit", 235, 500, 15, WHITE);      
+        DrawText("Press 'C' to quit", 235, 500, 15, WHITE);
+        player.alive = false;
       EndDrawing();
     }
     else{
@@ -97,6 +98,7 @@ bool gameRun(std::string name, int winScore){
         ClearBackground(GREEN);
         DrawText("YOU WIN!", 223, 235, 30, WHITE);
         DrawText("Press 'C' to quit", 235, 500, 15, WHITE);
+        player.alive = true;
       EndDrawing();
     }
     
