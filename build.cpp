@@ -41,7 +41,7 @@ int main(){
     return 1;
   }
 
-  int build  = system("g++ main.cpp game.cpp functions.cpp player.cpp image.cpp -o main.exe -lraylib -lGL -lm -lpthread -ldl -lrt -lX11");
+  int build  = system("g++ src/main.cpp src/game.cpp src/functions.cpp src/player.cpp src/image.cpp -o main.exe -lraylib -lGL -lm -lpthread -ldl -lrt -lX11");
 
   if (build == 0){
     std::cout << "Program compiled successfully!" << std::endl;
