@@ -10,7 +10,7 @@ Why? you may ask. Because why not!
 To compile the program with G++ run this command
 
 ```
-g++ main.cpp game.cpp functions.cpp player.cpp image.cpp -o main.exe -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+g++ src/main.cpp src/game.cpp src/functions.cpp src/player.cpp src/image.cpp -o main.exe -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 ```
 
 Or
